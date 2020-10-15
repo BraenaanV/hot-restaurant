@@ -1,24 +1,65 @@
-// Dependencies
 var express = require("express");
 var path = require("path");
 
-//express setup
-
 var app = express();
-var PORT = process.env.PORT || 3000;
+var PORT = 3000;
 
-//Express data handle parsing
-
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//list arrays
+var tables = [
+  {
+    customerNamer: "The Dude",
+    phoneNumber: "doesn't have one",
+    customerEmail: "whatever they use at the bowling alley",
+    customerID: "El-dudarino",
+  },
+];
 
-var tables = [];
-var waitList = [];
+var waitList = [
+  {
+    customerNamer: "The Dude",
+    phoneNumber: "doesn't have one",
+    customerEmail: "whatever they use at the bowling alley",
+    customerID: "El-dudarino",
+  },
+];
 
-//Start server & listen
+app.get("/home", function(req, res) {
+  res.sendFile(path.join(__dirname, "home.html"));
+});
+
+app.get("/tables", function(req, res) {
+  res.sendFile(path.join(__dirname, "tables.html"));
+});
+
+app.get("/reserve", function(req, res) {
+  res.sendFile(path.join(__dirname, "reserve.html"));
+});
+
+// Displays all reservations
+app.get("/api/tables", function(req, res) {
+  return res.json(tables);
+});
+
+app.get("/api/waitList", function(req, res) {
+  return res.json(waitList);
+});
+
+
+app.post("/api/reserve", function(req, res) {
+
+  var newReservation = req.body;
+  console.log(newReservation);
+    if (tables.length <= 4) {
+        tables.push(newReservation);
+    } else {
+        waitList.push(newReservation);
+    }
+
+  res.json(newReservation);
+});
 
 app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
-  });
+  console.log("App listening on PORT " + PORT);
+});
