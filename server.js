@@ -25,7 +25,7 @@ var waitList = [
   },
 ];
 
-app.get("/home", function(req, res) {
+app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "home.html"));
 });
 
@@ -46,8 +46,14 @@ app.get("/api/waitList", function(req, res) {
   return res.json(waitList);
 });
 
+app.get("/api/clear", function(req, res) {
+  tables = [];
+  waitList = [];
+  // return res.json(clear);
+});
 
-app.post("/api/reserve", function(req, res) {
+
+app.post("/api/tables", function(req, res) {
 
   var newReservation = req.body;
   console.log(newReservation);
